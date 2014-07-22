@@ -19,7 +19,7 @@ describe("Tamagotchi", function() {
     it("sets the health level to the average of the food level, happiness level and rested level", function () {
       var myPet = Object.create(Tamagotchi);
       myPet.initialize("Pet Name", 0, "7/20/2014");
-      myPet.healthLevel.should.equal(10);
+      myPet.calcHealthLevel().should.equal(10);
     });
   });
 
@@ -42,11 +42,11 @@ describe("Tamagotchi", function() {
   });
 
   describe("medicine", function ()   {
-    it("increases the health level of the Tamagotchi has by the medicine dosage", function () {
+    it("increases the health level of the Tamagotchi by 1", function () {
       var myPet = Object.create(Tamagotchi);
       myPet.initialize("Pet Name", 0, "7/20/2014");
-      myPet.medicine(5);
-      myPet.healthLevel.should.equal(15);
+      myPet.medicine();
+      myPet.healthLevel.should.equal(11);
     });
   });
 
@@ -113,6 +113,15 @@ describe("Tamagotchi", function() {
       myPet.initialize("Pet Name", 0, "7/20/2014");
       myPet.happinessLevel = 3;
       myPet.happinessLevelWarning().should.equal(true);
+    });
+  });
+
+  describe("healthLevelWarning", function () {
+    it("should return a warning when health is less than 6", function () {
+      var myPet = Object.create(Tamagotchi);
+      myPet.initialize("Pet Name", 0, "7/20/2014");
+      myPet.healthLevel = 3;
+      myPet.healthLevelWarning().should.equal(true);
     });
   });
 

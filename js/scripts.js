@@ -8,11 +8,11 @@ var Tamagotchi = {
     this.foodLevel = 10;
     this.happinessLevel = 10;
     this.restedLevel = 10;
-    this.healthLevel = (this.foodLevel + this.happinessLevel + this.restedLevel) / 3; // calling calcHealthLevel doesn't work here
+    this.healthLevel = this.calcHealthLevel();
   },
 
   calcHealthLevel: function () {
-    this.healthLevel = (this.foodLevel + this.happinessLevel + this.restedLevel) / 3;
+    return ((this.foodLevel + this.happinessLevel + this.restedLevel) / 3);
   },
 
 // Action functions - need buttons
@@ -25,15 +25,15 @@ var Tamagotchi = {
     this.happinessLevel++;
   },
 
-  medicine: function (medicineDose) {
-    this.healthLevel = this.healthLevel + medicineDose;
+  medicine: function () {
+    this.healthLevel++;
   },
 
   putToBed: function () {
     if (!this.isSleeping) {
       this.isSleeping = true;
     } else {
-      alert("The Tamagotchi is already asleep!");
+ //     alert("The Tamagotchi is already asleep!");
     };
   },
 
@@ -53,7 +53,7 @@ var Tamagotchi = {
     var restedWarning = false;
       if (this.restedLevel < 4) {
         restedWarning = true;
-        alert("Your Tamagotchi is very tired, you should put it to bed!");
+ /*       alert("Your Tamagotchi is very tired, you should put it to bed!");*/
       };
     return restedWarning;
   },
@@ -62,7 +62,7 @@ var Tamagotchi = {
     var foodWarning = false;
       if (this.foodLevel < 4) {
         foodWarning = true;
-        alert("Your Tamagotchi is very hungry, you should feed it!");
+       /* alert("Your Tamagotchi is very hungry, you should feed it!");*/
       };
     return foodWarning;
   },
@@ -71,9 +71,18 @@ var Tamagotchi = {
     var happinessWarning = false;
       if (this.happinessLevel < 4) {
         happinessWarning = true;
-        alert("Your Tamagotchi is very unhappy, you should play with it!");
+       /* alert("Your Tamagotchi is very unhappy, you should play with it!");*/
       };
     return happinessWarning;
+  },
+
+  healthLevelWarning: function () {
+    var healthWarning = false;
+      if (this.healthLevel < 4) {
+        healthWarning = true;
+       /* alert("Your Tamagotchi is very unhappy, you should play with it!");*/
+      };
+    return healthWarning;
   },
 
 // Time passes
