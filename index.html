@@ -12,31 +12,32 @@
 <div class="container">
   <h1>Tamagotchi</h1><br>
   <div class="col-md-1">
-    <img src="./img/char0.png" alt="Picture of first character" class="small-photo-width"><br>
-    <img src="./img/char1.png" alt="Picture of second character" class="small-photo-width"><br>
-    <img src="./img/char2.png" alt="Picture of third character" class="small-photo-width"><br>
-    <img src="./img/char3.png" alt="Picture of fourth character" class="small-photo-width"><br>
-    <img src="./img/char4.png" alt="Picture of fifth character" class="small-photo-width"><br>
-    <img src="./img/char5.png" alt="Picture of sixth character" class="small-photo-width"><br>
-    <img src="./img/char6.png" alt="Picture of seventh character" class="small-photo-width"><br>
-    <img src="./img/char7.png" alt="Picture of eighth character" class="small-photo-width"><br>
-    <img src="./img/char8.png" alt="Picture of ninth character" class="small-photo-width"><br>
+    <button type="button" id="button0"><img src="./img/char0.png" alt="Picture of first character" class="small-photo-width"></button><br>
+    <button type="button" id="button1"><img src="./img/char1.png" alt="Picture of second character" class="small-photo-width"></button><br>
+    <button type="button" id="button2"><img src="./img/char2.png" alt="Picture of third character" class="small-photo-width"></button><br>
+    <button type="button" id="button3"><img src="./img/char3.png" alt="Picture of fourth character" class="small-photo-width"></button><br>
+    <button type="button" id="button4"><img src="./img/char4.png" alt="Picture of fifth character" class="small-photo-width"></button><br>
+    <button type="button" id="button5"><img src="./img/char5.png" alt="Picture of sixth character" class="small-photo-width"></button><br>
+    <button type="button" id="button6"><img src="./img/char6.png" alt="Picture of seventh character" class="small-photo-width"></button><br>
+    <button type="button" id="button7"><img src="./img/char7.png" alt="Picture of eighth character" class="small-photo-width"></button><br>
+    <button type="button" id="button8"><img src="./img/char8.png" alt="Picture of ninth character" class="small-photo-width"></button><br>
   </div> <!-- col-md-1 -->
   <div class="col-md-4">
-    <span class="show-message"><h5>Click on a character to choose it as your Tamagotchi</h5></span>
-    <img id="show-picture" class="photo-width" src="./img/question-mark.jpg" alt="Question mark"><br><br>
+    <span class="show-message"><h5>Click on a character to choose it as your Tamagotchi</h5>
+    <img class="photo-width" src="./img/question-mark.jpg" alt="Question mark"></span><br>
     <form id="form-to-disappear">
+      <br>
       <div class="form-group">
        <label for="tamagotchi-name">Tamagotchi Name</label>
-       <input type="text" id="tamagotchi-name" placeholder="Enter a name" size=20 class="form-control">
+       <input type="text" id="tamagotchi-name" placeholder="Enter a name" size=20 class="form-control"><br>
        <label for="tamagotchi-birthday">Tamagotchi Birthday</label>
-       <input type="date" id="tamagotchi-birthday" class="form-control">
+       <input type="date" id="tamagotchi-birthday"  class="form-control">
       </div> <!-- form-group 1 -->
       <button type="submit" class="btn btn-success">Create My Tamagotchi!</button>
     </form>
     <div id="show-name-birthday">
-      <h4>Tamagotchi Name: <span class="tamagotchi-name"></span></h3>
-      <h4>Tamagotchi Birthday: <span class="tamagotchi-birthday"><span></h3>
+      <h2><span class="tamagotchi-name"></span></h2>
+      <h5>Birthday: <span class="tamagotchi-birthday"><span></h5>
     </div>
   </div> <!-- col-md-4 -->
   <div class="col-md-1">
@@ -46,27 +47,25 @@
     <button type="button" class="threeD-button"><img src="./img/play-button.png" class="button-photo-width"></button>
     <button type="button" class="threeD-button"><img src="./img/bed-button.jpg" class="button-photo-width"></button>
     <button type="button" class="threeD-button"><img src="./img/medicine-button.png" class="button-photo-width"></button>
-    <br><br><br>
-    <div class="food-meter">
+    <br><br><br><br>
+    <div id="meter-area">
       <label for="food-level">Food Level&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-      <meter value="10" min="-1" low="4" high="8" optimum="10" max="15">2 out of 10</meter><br>
-    </div><br>
-    <div class="happiness-meter">
+      <span class="food-meter"><meter value="" min="-1" low="4" high="8" optimum="10" max="15"></meter>
+        </span><br><br>
       <label for="happiness-level">Happiness Level&nbsp</label>
-      <meter value="2" min="-1" low="4" high="8" optimum="10" max="15">2 out of 10</meter><br>
-    </div><br>
-    <div class="rested-meter">
+      <span class="happiness-meter"><meter value="" min="-1" low="4" high="8" optimum="10" max="15"></meter>
+        </span><br><br>
       <label for="rested-level">Rest Level&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-      <meter value="3" min="-1" low="4" high="8" optimum="10" max="15">2 out of 10</meter><br>
-    </div><br>
-    <div class="health-meter">
+      <span class="rested-meter"><meter value="" min="-1" low="4" high="8" optimum="10" max="15"></meter>
+        </span><br><br>
       <label for="health-level">Health Level&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-      <meter value="5" min="-1" low="4" high="8" optimum="10" max="15">2 out of 10</meter><br>
-    </div>
+      <span class="health-meter"><meter value="" min="-1" low="4" high="8" optimum="10" max="15"></meter>
+        </span><br>
+    </div> <!-- meter-area -->
     <br><br>
-    <div class="alert alert-danger">
-      <h5 class="warning-message">warning message</h5>
-    </div><!--end message div-->
+    <div class="alert">
+      <h5><span class="alert-msg"></span></h5>
+    </div><!--end alert div-->
 
   </div> <!-- col-md-6 -->
 </div> <!-- row -->
