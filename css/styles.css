@@ -6,6 +6,7 @@
 #meter-area {
   display: none;
 }
+
 .alert-warning {
   background-color: #ffff66;
   color: black;
@@ -14,6 +15,17 @@
 .alert-danger {
   background-color: #db4d4d;
   color: black;
+}
+
+.flip-vertical {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv; /*IE*/
+}
+
+.tiny-photo-width {
+  width: 30px;
 }
 
 .small-photo-width {
@@ -28,26 +40,6 @@
   height: 75px;
 }
 
-h1, .show-message h5 {
-  text-align: center;
-}
-
-h2 {
-  text-decoration: underline;
-}
-
-h5 {
-  font-weight: bold;
-}
-
-.col-md-1 button {
-  -webkit-appearance: none;
-  background-color: white;
-  border: none;
-  box-shadow: white;
-  border-radius: white;
-}
-
 .photo-width {
   height: 250px;
   padding: 2px;
@@ -57,9 +49,15 @@ h5 {
   margin-left: auto;
 }
 
-meter {
-  height: 40px;
-  width: 75%;
+.opaque {
+   opacity: 1;
+   transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.opaque:hover {
+  opacity: 0.5;
 }
 
 .threeD-button {
@@ -76,3 +74,26 @@ meter {
     text-shadow: 0px -1px 0px rgba(0,0,0,.5);
     box-shadow: 0px 6px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4), inset 0px 1px 0px rgba(255,255,255,.3), inset 0px 0px 3px rgba(255,255,255,.5);
 }
+
+h1, .show-message h5 {
+  text-align: center;
+}
+
+h2>span.tamagotchi-name {
+  text-decoration: underline;
+}
+
+h5 {
+  font-weight: bold;
+}
+
+h6 {
+  font-style: italic;
+  text-align: center;
+}
+
+meter {
+  height: 40px;
+  width: 75%;
+}
+

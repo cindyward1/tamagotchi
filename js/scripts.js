@@ -8,32 +8,41 @@ var Tamagotchi = {
     this.foodLevel = 10;
     this.happinessLevel = 10;
     this.restedLevel = 10;
-    this.healthLevel = this.calcHealthLevel();
+    this.healthLevel = 10;
   },
 
   calcHealthLevel: function () {
-    return ((this.foodLevel + this.happinessLevel + this.restedLevel) / 3);
+    var tempHealthLevel = (this.foodLevel + this.happinessLevel + this.restedLevel) / 3;
+    if ((this.healthLevel >= 15) && (tempHealthLevel >= 15)) {
+      return 15;
+    } else {
+      return ((tempHealthLevel + this.healthLevel)/2);
+    };
   },
 
 // Action functions - need buttons
 
   feed: function () {
-    this.foodLevel++;
+    if (this.foodLevel < 15) {
+      this.foodLevel++;
+    };
   },
 
   play: function () {
-    this.happinessLevel++;
+    if (this.happinessLevel < 15) {
+      this.happinessLevel++;
+    };
   },
 
   medicine: function () {
-    this.healthLevel++;
+    if (this.healthLevel < 15) {
+      this.healthLevel++;
+    };
   },
 
   putToBed: function () {
     if (!this.isSleeping) {
       this.isSleeping = true;
-    } else {
- //     alert("The Tamagotchi is already asleep!");
     };
   },
 
@@ -53,7 +62,6 @@ var Tamagotchi = {
     var restedWarning = false;
       if (this.restedLevel < 4) {
         restedWarning = true;
- /*       alert("Your Tamagotchi is very tired, you should put it to bed!");*/
       };
     return restedWarning;
   },
@@ -62,7 +70,6 @@ var Tamagotchi = {
     var foodWarning = false;
       if (this.foodLevel < 4) {
         foodWarning = true;
-       /* alert("Your Tamagotchi is very hungry, you should feed it!");*/
       };
     return foodWarning;
   },
@@ -71,7 +78,6 @@ var Tamagotchi = {
     var happinessWarning = false;
       if (this.happinessLevel < 4) {
         happinessWarning = true;
-       /* alert("Your Tamagotchi is very unhappy, you should play with it!");*/
       };
     return happinessWarning;
   },
@@ -80,118 +86,125 @@ var Tamagotchi = {
     var healthWarning = false;
       if (this.healthLevel < 4) {
         healthWarning = true;
-       /* alert("Your Tamagotchi is very unhappy, you should play with it!");*/
       };
     return healthWarning;
   },
 
 // Time passes
 
-  timePasses: function () {
+  timePasses: function (intervalID) {
     if (this.isSleeping) {
-      this.restedLevel++;
-      this.happinessLevel--;
+      if (this.restedLevel < 15) {
+        this.restedLevel++;
+      };
+      if (this.happinessLevel > 0) {
+        this.happinessLevel--;
+      };
     } else { // is awake
-      this.restedLevel--;
-      this.happinessLevel--;
-      this.foodLevel--;
+      if (this.foodLevel > 0) {
+        this.foodLevel--;
+      };
+      if (this.restedLevel > 0) {
+        this.restedLevel--;
+      };
+      if (this.happinessLevel > 0) {
+        this.happinessLevel--;
+      };
+    };
+    this.healthLevel = this.calcHealthLevel();
+    this.setTamagotchiMeters(intervalID);
+  },
+
+  setTamagotchiMeters: function (intervalID) {
+
+    if (this.isSleeping) {
+      $(".asleep-or-awake").html("<img src='./img/bird-asleep.png' class='tiny-photo-width'>")
+    } else {
+      $(".asleep-or-awake").html("<img src='./img/bird-awake.png' class='tiny-photo-width'>")
+    };
+
+    $(".food-meter").html("<meter value=" + this.foodLevel + " min='-1' low='3' high='8' optimum='10' max='15'></meter>");
+    $(".happiness-meter").html("<meter value=" + this.happinessLevel + " min='-1' low='4' high='8' optimum='10' max='15'></meter>");
+    $(".rested-meter").html("<meter value=" + this.restedLevel + " min='-1' low='3' high='8' optimum='10' max='15'></meter>");
+    this.healthLevel = this.calcHealthLevel();
+    $(".health-meter").html("<meter value=" + this.healthLevel + " min='-1' low='4' high='8' optimum='10' max='15'></meter>");
+
+    $(".alert").removeClass("alert-warning");
+    $(".alert-msg").text("");
+
+    if (!this.isAlive()) {
+      $(".alert").addClass("alert-danger");
+      $(".alert-msg").text("Too late! Your Tamagotchi is DEAD!");
+      $(".show-message").html("<h6>&nbsp</h6><img class='flip-vertical photo-width' src='./img/char" + this.image + ".png' alt='Picture of character'>");
+      $(".asleep-or-awake").html("<img src='./img/bird-asleep.png' class='tiny-photo-width'>");
+      $("button#feed img").addClass("opaque")
+      $("button#feed").off("click");
+      $("button#play img").addClass("opaque")
+      $("button#play").off("click");
+      $("button#put-to-bed img").addClass("opaque")
+      $("button#put-to-bed").off("click");
+      $("button#medicine img").addClass("opaque")
+      $("button#medicine").off("click");
+      clearInterval(intervalID);
+    } else if (this.healthLevelWarning()) {
+      $(".alert").addClass("alert-warning");
+      $(".alert-msg").text("Your Tamagotchi is sick: Feed, play, put to bed, give medicine!")
+    } else if (this.foodLevelWarning()) {
+      $(".alert").addClass("alert-warning");
+      $(".alert-msg").text("Your Tamagotchi is hungry: Feed it!");
+    } else if (this.happinessLevelWarning()) {
+      $(".alert").addClass("alert-warning");
+      $(".alert-msg").text("Your Tamagotchi is sad: Play with it!");
+    } else if (this.restedLevelWarning()) {
+      $(".alert").addClass("alert-warning");
+      $(".alert-msg").text("Your Tamagotchi is tired: Put it to bed!")
     };
   }
 
 }; // end Tamagotchi
 
+
 $(document).ready (function () {
 
-  var buttonSelected = false;
-  var numberImage = 0;
+  var numberImage = -1;
 
-  if (!buttonSelected) {
-    $("button#button0").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char0.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 0;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button1").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char1.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 1;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button2").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char2.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 2;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button3").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char3.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 3;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button4").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char4.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 4;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button5").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char5.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 5;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button6").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char6.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 6;
-    });
-  };
-
-  if (!buttonSelected) {
-   $("button#button7").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char7.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 7;
-    });
-  };
-
-  if (!buttonSelected) {
-    $("button#button8").click (function () {
-      $(".show-message").html("<img class='photo-width' src='./img/char8.png' alt='Picture of first character'>");
-    buttonSelected = true;
-    numberImage = 8;
-    });
+  for (var index = 0; index < 9; index++) { // create click handlers for images
+    $("img#button" + index).click (function (lockedInIndex) {
+      return function (event) {
+        event.preventDefault();
+        $(".show-message").html("<h6>&nbsp</h6><img class='photo-width' src='./img/char" + lockedInIndex + ".png' alt='Picture of character'>");
+        numberImage = lockedInIndex;
+      };
+    } (index)); // immediately invoked function expression
   };
 
   $("form#form-to-disappear").submit(function(event){
+
     event.preventDefault();
+
+    if (numberImage === -1) { // no image clicked
+      numberImage = 0;
+      $(".show-message").html("<h6>&nbsp</h6><img class='photo-width' src='./img/char" + numberImage + ".png' alt='Picture of character'>");
+    };
+
+    for (var index = 0; index < 9; index++) { // turns all images except selected opaque on hover and disables click for all images
+      if (index !== numberImage) {
+        $("img#button" + index).addClass("opaque");
+      };
+      $("img#button" + index).off ("click");
+    };
 
     var inputtedName = $("input#tamagotchi-name").val();
     var inputtedBirthday = $("input#tamagotchi-birthday").val();
 
     $(".tamagotchi-name").text(inputtedName);
 
-    var formattedDate = new Date(inputtedBirthday);
-    var displayDay = formattedDate.getDate();
-    displayDay++;
-    var displayMonth =  formattedDate.getMonth();
-    displayMonth++;  // JavaScript months are 0-11
-    var displayYear = formattedDate.getFullYear();
-    var dateToDisplay = displayMonth + "/" + displayDay + "/" + displayYear;
+    // inputtedBirthday is in format yyyy-mm-dd from using input type="date"
+
+    var monthToDisplay = inputtedBirthday.slice(5,7);
+    var dayToDisplay = inputtedBirthday.slice(8,10);
+    var yearToDisplay = inputtedBirthday.slice(0,4);
+    var dateToDisplay = monthToDisplay + "/" + dayToDisplay + "/" + yearToDisplay;
 
     $(".tamagotchi-birthday").text(dateToDisplay);
 
@@ -204,13 +217,85 @@ $(document).ready (function () {
     var myTamagotchi = Object.create(Tamagotchi);
     myTamagotchi.initialize(inputtedName, numberImage, dateToDisplay);
 
-    $(".food-meter").replaceWith("<meter value=" + myTamagotchi.foodLevel + " min='-1' low='4' high='8' optimum='10' max='15'></meter>");
-    $(".happiness-meter").replaceWith("<meter value=" + myTamagotchi.happinessLevel + " min='-1' low='4' high='8' optimum='10' max='15'></meter>");
-    $(".rested-meter").replaceWith("<meter value=" + myTamagotchi.restedLevel + " min='-1' low='4' high='8' optimum='10' max='15'></meter>");
-    $(".health-meter").replaceWith("<meter value=" + myTamagotchi.healthLevel + " min='-1' low='6' high='8' optimum='10' max='15'></meter>");
+    myTamagotchi.setTamagotchiMeters(0);
 
     $("#meter-area").show();
 
-  });
+    var intervalID;
+    // intervalID = setInterval(myTamagotchi.timePasses(), 1000);
+    intervalID = setInterval(function() {
+      myTamagotchi.timePasses();
+      if (!myTamagotchi.isAlive()) {
+        clearInterval(intervalID);
+      };
+    }, 1000);
+
+    $("button#feed").click (function () {
+      clearInterval(intervalID);
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isSleeping) {
+        myTamagotchi.isSleeping = false;
+      };
+      myTamagotchi.feed();
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isAlive) {
+        intervalID = setInterval(function() {
+          myTamagotchi.timePasses();
+          if (!myTamagotchi.isAlive()) {
+            clearInterval(intervalID);
+          };
+        }, 1000);
+      };
+    });
+
+    $("button#play").click (function () {
+      clearInterval(intervalID);
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isSleeping) {
+        myTamagotchi.isSleeping = false;
+      };
+      myTamagotchi.play();
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isAlive) {
+        intervalID = setInterval(function() {
+          myTamagotchi.timePasses();
+          if (!myTamagotchi.isAlive()) {
+            clearInterval(intervalID);
+          };
+        }, 1000);
+      };
+    });
+
+    $("button#put-to-bed").click (function () {
+      clearInterval(intervalID);
+      myTamagotchi.setTamagotchiMeters();
+      myTamagotchi.putToBed();
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isAlive) {
+        intervalID = setInterval(function() {
+          myTamagotchi.timePasses();
+          if (!myTamagotchi.isAlive()) {
+            clearInterval(intervalID);
+          };
+        }, 1000);
+      };
+    });
+
+    $("button#medicine").click (function () {
+      clearInterval(intervalID);
+      myTamagotchi.setTamagotchiMeters();
+      myTamagotchi.medicine();
+      myTamagotchi.setTamagotchiMeters();
+      if (myTamagotchi.isAlive) {
+        intervalID = setInterval(function() {
+          myTamagotchi.timePasses();
+          if (!myTamagotchi.isAlive()) {
+            clearInterval(intervalID);
+          };
+        }, 1000);
+      };
+    });
+
+  }); // end form submit
 
 });
