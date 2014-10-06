@@ -96,4 +96,9 @@ meter {
   height: 40px;
   width: 75%;
 }
-
+ 
+input[type="range"] {
+  display: inline;
+  width: 85%;
+  margin-right: 12px;
+}

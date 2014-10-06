@@ -160,9 +160,15 @@ var Tamagotchi = {
       $(".alert-msg").text("Your Tamagotchi is tired: Put it to bed!")
     };
   }
-
 }; // end Tamagotchi
 
+var printValue = function (control1, control2) {
+  var difficulty
+  if (!$("input#" + control1).disabled) {
+    difficulty = $("input#" + control1).val();
+    $("input#" + control2).val(difficulty);
+  };
+}
 
 $(document).ready (function () {
 
@@ -214,21 +220,24 @@ $(document).ready (function () {
     $("#form-to-disappear").hide();
     $("#show-name-birthday").show();
 
+    var difficulty = $("input#difficulty-range").val();
+    $("input#difficulty-text").val(difficulty);
+    $(".disable-slider").html('<input id="difficulty-range" type ="range" min ="100" max="1000" step ="100" value=' + difficulty + ' disabled="disabled">');
+
     var myTamagotchi = Object.create(Tamagotchi);
     myTamagotchi.initialize(inputtedName, numberImage, dateToDisplay);
 
     myTamagotchi.setTamagotchiMeters(0);
-
     $("#meter-area").show();
 
     var intervalID;
-    // intervalID = setInterval(myTamagotchi.timePasses(), 1000);
+
     intervalID = setInterval(function() {
       myTamagotchi.timePasses();
       if (!myTamagotchi.isAlive()) {
         clearInterval(intervalID);
       };
-    }, 1000);
+    }, difficulty);
 
     $("button#feed").click (function () {
       clearInterval(intervalID);
@@ -244,7 +253,7 @@ $(document).ready (function () {
           if (!myTamagotchi.isAlive()) {
             clearInterval(intervalID);
           };
-        }, 1000);
+        }, difficulty);
       };
     });
 
@@ -262,7 +271,7 @@ $(document).ready (function () {
           if (!myTamagotchi.isAlive()) {
             clearInterval(intervalID);
           };
-        }, 1000);
+        }, difficulty);
       };
     });
 
@@ -277,7 +286,7 @@ $(document).ready (function () {
           if (!myTamagotchi.isAlive()) {
             clearInterval(intervalID);
           };
-        }, 1000);
+        }, difficulty);
       };
     });
 
@@ -292,7 +301,7 @@ $(document).ready (function () {
           if (!myTamagotchi.isAlive()) {
             clearInterval(intervalID);
           };
-        }, 1000);
+        }, difficulty);
       };
     });
 
