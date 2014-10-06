@@ -222,6 +222,7 @@ $(document).ready (function () {
 
     var difficulty = $("input#difficulty-range").val();
     $("input#difficulty-text").val(difficulty);
+    // I could not seem to disable the slider so I wrote over the html instead
     $(".disable-slider").html('<input id="difficulty-range" type ="range" min ="100" max="1000" step ="100" value=' + difficulty + ' disabled="disabled">');
 
     var myTamagotchi = Object.create(Tamagotchi);
